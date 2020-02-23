@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="WARN" packages="com.kenny.craftix">
+    <Appenders>
+        <Console name="FmlSysOut" target="SYSTEM_OUT">
+            <PatternLayout pattern="[%d{HH:mm:ss}] [%t/%level] [%logger]: %msg%n" />
+        </Console>
+        <Console name="SysOut" target="SYSTEM_OUT">
+            <PatternLayout pattern="[%d{HH:mm:ss}] [%t/%level]: %msg%n" />
+        </Console>
+        <RollingRandomAccessFile name="File" fileName="logs/latest.log" filePattern="logs/%d{yyyy-MM-dd}-%i.log.gz">
+            <PatternLayout pattern="[%d{HH:mm:ss}] [%t/%level]: %msg%n" />
+            <Policies>
+                <TimeBasedTriggeringPolicy />
+                <OnStartupTriggeringPolicy />
+            </Policies>
+        </RollingRandomAccessFile>
+        <Routing name="FmlFile">
+            <Routes pattern="$${ctx:side}">
+                <Route>
+                    <RollingRandomAccessFile name="FmlFile" fileName="C:\.craftix\crashReports\latest\craftixLog-latest.log" filePattern="C:\.craftix\crashReports\log\craftixLog.log">
+                        <PatternLayout pattern="[%d{HH:mm:ss}] [%t/%level] [%logger/%X{mod}]: %msg%n" />
+                        <DefaultRolloverStrategy max="3" fileIndex="max" />
+                        <Policies>
+                            <OnStartupTriggeringPolicy />
+                        </Policies>
+                    </RollingRandomAccessFile>
+                </Route>
+                <Route key="$${ctx:side}">
+                    <RandomAccessFile name="FmlFile" fileName="C:\.craftix\crashReports\earlyStartup\craftixEarlyStart.log" >
+                        <PatternLayout pattern="[%d{HH:mm:ss}] [%t/%level] [%logger]: %msg%n" />
+                    </RandomAccessFile>
+                </Route>
+            </Routes>
+        </Routing>
+    </Appenders>
+    <Loggers>
+        <Logger level="info" name="properties" additivity="false">
+            <AppenderRef ref="SysOut" level="INFO" />
+            <AppenderRef ref="File" />
+           
+        </Logger>
+        <Logger level="info" name="properties" additivity="false">
+            <filters>
+                <MarkerFilter marker="NETWORK_PACKETS" onMatch="DENY" onMismatch="NEUTRAL" />
+            </filters>
+            <AppenderRef ref="SysOut" level="INFO" />
+            <AppenderRef ref="File" />
+           
+        </Logger>
+        <Root level="all">
+            <AppenderRef ref="FmlSysOut" level="INFO" />
+           
+            <AppenderRef ref="FmlFile"/>
+        </Root>
+    </Loggers>
+</Configuration>
