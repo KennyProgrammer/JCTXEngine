@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8">
+		<attributes>
+			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="CTXEngine/lib/native"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="lib" path="lib/jar/lwjgl-glfw.jar" sourcepath="lib/source/lwjgl-glfw-sources.jar"/>
+	<classpathentry kind="lib" path="lib/jar/lwjgl-opengl.jar" sourcepath="lib/source/lwjgl-opengl-sources.jar"/>
+	<classpathentry kind="lib" path="lib/jar/lwjgl-stb.jar" sourcepath="lib/source/lwjgl-stb-sources.jar"/>
+	<classpathentry kind="lib" path="lib/jar/lwjgl.jar" sourcepath="lib/source/lwjgl-sources.jar"/>
+	<classpathentry kind="lib" path="lib/jar/guava-26.0-jre.jar"/>
+	<classpathentry kind="lib" path="lib/jar/joml-1.9.20.jar" sourcepath="lib/source/joml-1.9.20-sources.jar"/>
+	<classpathentry kind="lib" path="lib/jar/lwjglx-debug-1.0.0.jar" sourcepath="lib/source/lwjglx-debug-1.0.0-sources.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>
