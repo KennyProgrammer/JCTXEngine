@@ -27,7 +27,7 @@ public class CrafixApp extends CoreApp
 		getConfigurations().ctxWindowHeight = 720;
 		
 		this.scene = new ExampleScene();
-		
+
 	}
 
 	@Override

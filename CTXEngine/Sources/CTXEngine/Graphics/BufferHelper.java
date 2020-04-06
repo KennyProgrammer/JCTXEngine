@@ -1,4 +1,4 @@
-package CTXEngine.Graphics.GL;
+package CTXEngine.Graphics;
 
 import static org.lwjgl.system.MemoryUtil.*;
 
@@ -22,7 +22,7 @@ import org.lwjgl.BufferUtils;
  * Lwjgl and memory controlling, and stored data to java buffers instead c/c++ pointers.
  * 
  */
-public final class GLJavaBufferHelper 
+public final class BufferHelper 
 {
 	public static FloatBuffer putMatrix4ftoFloatBuffer(FloatBuffer buffer, Matrix4f matrix)
 	{
@@ -72,21 +72,21 @@ public final class GLJavaBufferHelper
 	public static FloatBuffer createFlippedBuffer(Matrix4f matrix)
 	{
 		FloatBuffer buffer = BufferUtils.createFloatBuffer(4 * 4);
-		GLJavaBufferHelper.putMatrix4ftoFloatBuffer(buffer, matrix).flip();
+		BufferHelper.putMatrix4ftoFloatBuffer(buffer, matrix).flip();
 		return buffer;
 	}
 	
 	public static FloatBuffer createFlippedBuffer(Matrix3f matrix)
 	{
 		FloatBuffer buffer = BufferUtils.createFloatBuffer(3 * 3);
-		GLJavaBufferHelper.putMatrix3ftoFloatBuffer(buffer, matrix).flip();
+		BufferHelper.putMatrix3ftoFloatBuffer(buffer, matrix).flip();
 		return buffer;
 	}
 	
 	public static FloatBuffer createFlippedBuffer(Matrix2f matrix)
 	{
 		FloatBuffer buffer = BufferUtils.createFloatBuffer(2 * 2);
-		GLJavaBufferHelper.putMatrix2ftoFloatBuffer(buffer, matrix).flip();
+		BufferHelper.putMatrix2ftoFloatBuffer(buffer, matrix).flip();
 		return buffer;
 	}
 	
@@ -96,7 +96,7 @@ public final class GLJavaBufferHelper
 		
 		for (Matrix4f matrix : matrices)
 		{
-			GLJavaBufferHelper.putMatrix4ftoFloatBuffer(buffer, matrix);
+			BufferHelper.putMatrix4ftoFloatBuffer(buffer, matrix);
 		}
 		
 		buffer.flip();
@@ -109,7 +109,7 @@ public final class GLJavaBufferHelper
 		
 		for (Matrix3f matrix : matrices)
 		{
-			GLJavaBufferHelper.putMatrix3ftoFloatBuffer(buffer, matrix);
+			BufferHelper.putMatrix3ftoFloatBuffer(buffer, matrix);
 		}
 		
 		buffer.flip();
@@ -122,7 +122,7 @@ public final class GLJavaBufferHelper
 		
 		for (Matrix2f matrix : matrices)
 		{
-			GLJavaBufferHelper.putMatrix2ftoFloatBuffer(buffer, matrix);
+			BufferHelper.putMatrix2ftoFloatBuffer(buffer, matrix);
 		}
 		
 		buffer.flip();
@@ -132,33 +132,27 @@ public final class GLJavaBufferHelper
 	public static FloatBuffer createFlippedBuffer(Vector2f matrix)
 	{
 		FloatBuffer buffer = BufferUtils.createFloatBuffer(2 * 2);
-		GLJavaBufferHelper.putVector2ftoFloatBuffer(buffer, matrix).flip();
+		BufferHelper.putVector2ftoFloatBuffer(buffer, matrix).flip();
 		return buffer;
 	}
 	
 	public static FloatBuffer createFlippedBuffer(Vector3f matrix)
 	{
 		FloatBuffer buffer = BufferUtils.createFloatBuffer(3 * 3);
-		GLJavaBufferHelper.putVector3ftoFloatBuffer(buffer, matrix).flip();
+		BufferHelper.putVector3ftoFloatBuffer(buffer, matrix).flip();
 		return buffer;
 	}
 	
 	public static FloatBuffer createFlippedBuffer(Vector4f matrix)
 	{
 		FloatBuffer buffer = BufferUtils.createFloatBuffer(4 * 4);
-		GLJavaBufferHelper.putVector4ftoFloatBuffer(buffer, matrix).flip();
+		BufferHelper.putVector4ftoFloatBuffer(buffer, matrix).flip();
 		return buffer;
 	}
 	
 	public static ByteBuffer toByteBuffer(int size, int... data) 
 	{
-									//sizeof(signed byte)
-		ByteBuffer buffer = memAlloc(Integer.BYTES * size);
-		IntBuffer intBuffer = buffer.asIntBuffer();
-		intBuffer.put(data);
-		intBuffer.flip();
-		
-		return buffer;
+		return (ByteBuffer) memAlloc(Integer.BYTES * size).asIntBuffer().put(data).flip();
 	}
 
 	public static ByteBuffer toByteBuffer(int... data) 
@@ -166,15 +160,9 @@ public final class GLJavaBufferHelper
 		return toByteBuffer(data.length, data);
 	}
 	
-	
 	public static ShortBuffer toShortBuffer(int size, short... data) 
-	{
-											//sizeof(signed int short)
-		ShortBuffer buffer = memAllocShort(Short.BYTES * size);
-		buffer.put(data);
-		buffer.flip();
-		
-		return buffer;
+	{					
+		return (ShortBuffer) memAllocShort(Short.BYTES * size).put(data).flip();
 	}
 	
 	public static ShortBuffer toShortBuffer(short... data) 
@@ -183,28 +171,18 @@ public final class GLJavaBufferHelper
 	}
 	
 	public static IntBuffer toIntBuffer(int size, int... data) 
-	{
-										//sizeof(signed int)
-		IntBuffer buffer = memAllocInt(Integer.BYTES * size);
-		buffer.put(data);
-		buffer.flip();
-		
-		return buffer;
+	{						
+		return (IntBuffer) memAllocInt(Integer.BYTES * size).put(data).flip();
 	}
 	
 	public static IntBuffer toIntBuffer(int... data)
 	{
 		return toIntBuffer(data.length, data);
 	}
-	
-											//sizeof(int long long)
+											
 	public static LongBuffer toLongBuffer(int size, long... data) 
 	{
-		LongBuffer buffer = memAllocLong(Long.BYTES * size);
-		buffer.put(data);
-		buffer.flip();
-		
-		return buffer;
+		return (LongBuffer) memAllocLong(Long.BYTES * size).put(data).flip();
 	}
 	
 	public static LongBuffer toLongBuffer(long... data)
@@ -214,11 +192,7 @@ public final class GLJavaBufferHelper
 	
 	public static FloatBuffer toFloatBuffer(int size, float... data)
 	{
-		FloatBuffer buffer = memAllocFloat(Float.BYTES * size);
-		buffer.put(data);
-		buffer.flip();
-		
-		return buffer;
+		return (FloatBuffer) memAllocFloat(Float.BYTES * size).put(data).flip();
 	}
 	
 	public static FloatBuffer toFloatBuffer(float... data)
@@ -228,17 +202,11 @@ public final class GLJavaBufferHelper
 	
 	public static DoubleBuffer toDoubleBuffer(int size, double... data)
 	{
-		DoubleBuffer buffer = memAllocDouble(Double.BYTES * size);
-		buffer.put(data);
-		buffer.flip();
-		
-		return buffer;
+		return (DoubleBuffer) memAllocDouble(Double.BYTES * size).put(data).flip();
 	}
 	
 	public static DoubleBuffer toDoubleBuffer(double... data)
 	{
 		return toDoubleBuffer(data.length, data);
 	}
-	
-	
 }	

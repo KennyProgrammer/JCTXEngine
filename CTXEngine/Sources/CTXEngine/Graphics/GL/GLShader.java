@@ -22,6 +22,7 @@ import static org.lwjgl.opengl.GL20.*;
 import static org.lwjgl.opengl.GL32.*;
 import static org.lwjgl.opengl.GL40.*;
 
+import CTXEngine.Graphics.BufferHelper;
 import CTXEngine.Graphics.Shader;
 
 import static CTXEngine.Core.CoreBase.*;
@@ -346,7 +347,7 @@ public class GLShader extends Shader
 	public void setUniformMat4(String name, Matrix4f matrix4x4) 
 	{	
 		int location = GLHelper.hglGetUniformLocation(this.id, name);
-		GLHelper.hglUniformMatrix4fv(location, false, GLJavaBufferHelper.createFlippedBuffer(matrix4x4));
+		GLHelper.hglUniformMatrix4fv(location, false, BufferHelper.createFlippedBuffer(matrix4x4));
 	}
 
 	/**
@@ -356,7 +357,7 @@ public class GLShader extends Shader
 	public void setUniformMat3(String name, Matrix3f matrix3x3) 
 	{
 		int location = GLHelper.hglGetUniformLocation(this.id, name);
-		GLHelper.hglUniformMatrix3fv(location, false, GLJavaBufferHelper.createFlippedBuffer(matrix3x3));
+		GLHelper.hglUniformMatrix3fv(location, false, BufferHelper.createFlippedBuffer(matrix3x3));
 	}
 
 	/**
@@ -366,7 +367,7 @@ public class GLShader extends Shader
 	public void setUniformVec4(String name, Vector4f vector4) 
 	{
 		int location = GLHelper.hglGetUniformLocation(this.id, name);
-		GLHelper.hglUniform4fv(location, GLJavaBufferHelper.createFlippedBuffer(vector4));
+		GLHelper.hglUniform4fv(location, BufferHelper.createFlippedBuffer(vector4));
 	}
 
 	/**
@@ -376,7 +377,7 @@ public class GLShader extends Shader
 	public void setUniformVec3(String name, Vector3f vector3) 
 	{
 		int location = GLHelper.hglGetUniformLocation(this.id, name);
-		GLHelper.hglUniform3fv(location, GLJavaBufferHelper.createFlippedBuffer(vector3));
+		GLHelper.hglUniform3fv(location, BufferHelper.createFlippedBuffer(vector3));
 	}
 
 	/**
@@ -386,7 +387,7 @@ public class GLShader extends Shader
 	public void setUniformVec2(String name, Vector2f vector2) 
 	{
 		int location = GLHelper.hglGetUniformLocation(this.id, name);
-		GLHelper.hglUniform2fv(location, GLJavaBufferHelper.createFlippedBuffer(vector2));
+		GLHelper.hglUniform2fv(location, BufferHelper.createFlippedBuffer(vector2));
 	}
 
 	/**
@@ -396,7 +397,7 @@ public class GLShader extends Shader
 	public void setUniformVec1(String name, float vector) 
 	{
 		int location = GLHelper.hglGetUniformLocation(this.id, name);
-		GLHelper.hglUniform1fv(location, GLJavaBufferHelper.toFloatBuffer(vector));
+		GLHelper.hglUniform1fv(location, BufferHelper.toFloatBuffer(vector));
 	}
 
 	/**

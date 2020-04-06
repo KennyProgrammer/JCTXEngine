@@ -5,7 +5,7 @@
 			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="CTXEngine/lib/native"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="src" path="Sources"/>
 	<classpathentry kind="lib" path="lib/jar/lwjgl-glfw.jar" sourcepath="lib/source/lwjgl-glfw-sources.jar"/>
 	<classpathentry kind="lib" path="lib/jar/lwjgl-opengl.jar" sourcepath="lib/source/lwjgl-opengl-sources.jar"/>
 	<classpathentry kind="lib" path="lib/jar/lwjgl-stb.jar" sourcepath="lib/source/lwjgl-stb-sources.jar"/>

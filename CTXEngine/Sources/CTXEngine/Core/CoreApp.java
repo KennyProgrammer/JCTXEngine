@@ -50,7 +50,7 @@ public abstract class CoreApp implements CoreAppImpl, CoreAppClientImpl
 		public CoreConfigurations()
 		{
 			this.ctxEngineName = "CTXEngine";
-			this.ctxEngineVersion = "0.1.20_5";
+			this.ctxEngineVersion = "0.1.20_2j";
 			this.ctxAppName = "unknown";
 			this.ctxAppVersion = "unknown";
 			this.ctxWindowFullscreen = false;
@@ -59,6 +59,24 @@ public abstract class CoreApp implements CoreAppImpl, CoreAppClientImpl
 			this.ctxIsWindowed = !(ctxWindowFullscreen);
 			this.ctxIsVsync = this.ctxWindowFullscreen;
 			this.ctxIsResized = !(ctxWindowFullscreen) & true;
+		}
+		
+		/**
+		 * Set configuration data from 'other' to this.
+		 */
+		public CoreApp set(CoreConfigurations other)
+		{
+			this.ctxEngineName = other.ctxEngineName;
+			this.ctxEngineVersion = other.ctxEngineVersion;
+			this.ctxAppName = other.ctxAppName;
+			this.ctxAppVersion = other.ctxAppVersion;
+			this.ctxWindowFullscreen = other.ctxWindowFullscreen;
+			this.ctxWindowWidth = other.ctxWindowWidth;
+			this.ctxWindowHeight = other.ctxWindowHeight;
+			this.ctxIsWindowed = other.ctxIsWindowed;
+			this.ctxIsVsync = other.ctxIsVsync;
+			this.ctxIsResized = other.ctxIsResized;
+			return get();
 		}
 
 		/**

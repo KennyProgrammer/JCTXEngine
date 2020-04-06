@@ -57,7 +57,7 @@ public final class RenderEngineHelper
 		renderEngineApi.disableDepthTesting();
 	};
 	
-	/*
+	/**
 	 * Enable alpha channel blending.
 	 */
 	public static void enableAlphaBlending()
@@ -79,8 +79,15 @@ public final class RenderEngineHelper
 	public static void clearColor(Vector4f colorIn)
 	{
 		renderEngineApi.clearColor(colorIn);
-		//RenderEngineHelper::clearColourFromEngine = true;
-	};
+	}
+	
+	/**
+	 * 	Clear colour from current or previous rendered frame.
+	 */
+	public static void clearColor(float r, float g, float b, float a)
+	{
+		clearColor(new Vector4f(r, g, b, a));
+	}
 	
 	/**
 	 * 	Clear storage of pixels, or depths.
@@ -88,8 +95,7 @@ public final class RenderEngineHelper
 	public static void clear()
 	{
 		renderEngineApi.clear();
-		//RenderEngineHelper::clearFromEngine = true;
-	};
+	}
 	
 	/**
 	 * 	This method will be draw input vao mesh uses only arrays in to the

@@ -19,6 +19,7 @@ import org.lwjgl.system.NativeType;
 import static CTXEngine.Core.SimplePrint.*;
 import static CTXEngine.Core.CoreBase.*;
 
+import CTXEngine.Graphics.BufferHelper;
 import CTXEngine.Graphics.BufferObject.ShaderDataType;
 
 /**
@@ -396,7 +397,7 @@ public final class GLHelper
 	 */
 	public static void hglBufferData(int bufferType, int usage, int size, int... data)
 	{
-		glBufferData(bufferType, GLJavaBufferHelper.toIntBuffer(size, data), usage);
+		glBufferData(bufferType, BufferHelper.toIntBuffer(size, data), usage);
 	}
 	
 	/**
@@ -405,7 +406,7 @@ public final class GLHelper
 	 */
 	public static void hglBufferData(int bufferType, int usage, int size, float... data)
 	{
-		glBufferData(bufferType, GLJavaBufferHelper.toFloatBuffer(size, data), usage);
+		glBufferData(bufferType, BufferHelper.toFloatBuffer(size, data), usage);
 	}
 	
 	/**
@@ -414,7 +415,7 @@ public final class GLHelper
 	 */
 	public static void hglBufferData(int bufferType, int usage, int size, double... data)
 	{
-		glBufferData(bufferType, GLJavaBufferHelper.toDoubleBuffer(size, data), usage);
+		glBufferData(bufferType, BufferHelper.toDoubleBuffer(size, data), usage);
 	}
 
 	
@@ -434,7 +435,7 @@ public final class GLHelper
 	 */
 	public static void hglBufferSubData(int bufferType, long offset, int[] data)
 	{
-		glBufferSubData(bufferType, offset, GLJavaBufferHelper.toIntBuffer(data));
+		glBufferSubData(bufferType, offset, BufferHelper.toIntBuffer(data));
 	}
 	
 	/**
@@ -443,7 +444,7 @@ public final class GLHelper
 	 */
 	public static void hglBufferSubData(int bufferType, long offset, float[] data)
 	{
-		glBufferSubData(bufferType, offset, GLJavaBufferHelper.toFloatBuffer(data));
+		glBufferSubData(bufferType, offset, BufferHelper.toFloatBuffer(data));
 	}
 	
 	/**
@@ -452,7 +453,7 @@ public final class GLHelper
 	 */
 	public static void hglBufferSubData(int bufferType, long offset, double[] data)
 	{
-		glBufferSubData(bufferType, offset, GLJavaBufferHelper.toDoubleBuffer(data));
+		glBufferSubData(bufferType, offset, BufferHelper.toDoubleBuffer(data));
 	}
 	
 	/**
@@ -461,7 +462,7 @@ public final class GLHelper
 	 */
 	public static void hglBufferSubData(int bufferType, long offset, int size, int[] data)
 	{
-		glBufferSubData(bufferType, offset, GLJavaBufferHelper.toIntBuffer(size, data));
+		glBufferSubData(bufferType, offset, BufferHelper.toIntBuffer(size, data));
 	}
 	
 	/**
@@ -470,7 +471,7 @@ public final class GLHelper
 	 */
 	public static void hglBufferSubData(int bufferType, long offset, int size, float[] data)
 	{
-		glBufferSubData(bufferType, offset, GLJavaBufferHelper.toFloatBuffer(size, data));
+		glBufferSubData(bufferType, offset, BufferHelper.toFloatBuffer(size, data));
 	}
 	
 	/**
@@ -479,7 +480,7 @@ public final class GLHelper
 	 */
 	public static void hglBufferSubData(int bufferType, long offset, int size, double[] data)
 	{
-		glBufferSubData(bufferType, offset, GLJavaBufferHelper.toDoubleBuffer(size, data));
+		glBufferSubData(bufferType, offset, BufferHelper.toDoubleBuffer(size, data));
 	}
 
 	//C/C++ style original example
