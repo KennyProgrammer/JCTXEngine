@@ -618,6 +618,14 @@ public final class GLHelper
 	{
 		glCompileShader(shaderType);
 	}
+	
+	/**
+	 * Returns a parameter from a shader object.
+	 */
+	public static int hglGetShaderi(int shaderType, int pname)
+	{
+		return glGetShaderi(shaderType, pname);
+	}
 
 	/**
 	 * Check the shaders on occurs error.
@@ -674,6 +682,14 @@ public final class GLHelper
 		glDeleteProgram(programId);
 	}
 
+	/**
+	 * Returns a parameter from a program object.
+	 */
+	public static int hglGetProgrami(int programId, int pname)
+	{
+		return glGetProgrami(programId, pname);
+	}
+	
 	/**
 	 * Check the program on occurs error.
 	 */

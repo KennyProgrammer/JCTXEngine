@@ -250,17 +250,17 @@ public class GLShader extends Shader
 		{
 			int type = i == 0 ? GL_VERTEX_SHADER : i == 1 ? GL_FRAGMENT_SHADER : -1;
 			final String source = shaderSources.get(shaderIdIdxs);
-			
+
 			int shader = GLHelper.hglCreateShader(type);
 			GLHelper.hglShaderSource(shader, source);
 			GLHelper.hglCompileShader(shader);
 			
 			int isCompiled = 0;
-			GLHelper.hglGetShaderiv(shader, GL_COMPILE_STATUS, isCompiled);
+			isCompiled = GLHelper.hglGetShaderi(shader, GL_COMPILE_STATUS);
 			if(isCompiled == GL_FALSE)
 			{
 				int maxLength = 0;
-				GLHelper.hglGetShaderiv(shader, GL_INFO_LOG_LENGTH, maxLength);
+				maxLength = GLHelper.hglGetShaderi(shader, GL_INFO_LOG_LENGTH);
 				
 				String infoLog = "";
 				infoLog = GLHelper.hglGetShaderInfoLog(shader, maxLength);
@@ -292,11 +292,11 @@ public class GLShader extends Shader
 		GLHelper.hglLinkProgram(program);
 
 		int isLinked = 0;
-		GLHelper.hglGetProgramiv(program, GL_LINK_STATUS, isLinked);
+		isLinked = GLHelper.hglGetProgrami(program, GL_LINK_STATUS);
 		if(isLinked == GL_FALSE)
 		{
 			int maxLength = 0;
-			GLHelper.hglGetProgramiv(program, GL_INFO_LOG_LENGTH, maxLength);
+			maxLength = GLHelper.hglGetProgrami(program, GL_INFO_LOG_LENGTH);
 			String infoLog = "";
 			infoLog = GLHelper.hglGetProgramInfoLog(program, maxLength);
 			

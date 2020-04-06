@@ -18,6 +18,7 @@ import CTXEngine.Graphics.BufferObject.ShaderDataType;
 import CTXEngine.Graphics.BufferObject.VertexBufferObject;
 import CTXEngine.Graphics.BufferObject.VertexAttribute;
 import CTXEngine.Graphics.RenderEngineHelper;
+import CTXEngine.Graphics.Shader;
 
 public class ExampleScene extends Scene
 {
@@ -27,8 +28,8 @@ public class ExampleScene extends Scene
 	public VertexBufferObject vertexBuffer;
 	/**Index Buffer Object.*/
 	public IndexBufferObject indexBuffer;
-	
-	int vao, vbo, ibo;
+	/**Shader.*/
+	public Shader shader;
 	
 	float[] vertices = new float[]
 			{
@@ -62,12 +63,14 @@ public class ExampleScene extends Scene
 		this.vertexBuffer = VertexBufferObject.createReferenceStatic(this.vertices, this.vertices.length * sizeof("float"));
 		this.vertexBuffer.setLayout(new BufferLayout
 		(
-			new VertexAttribute(ShaderDataType.t_float3, "v_position"))
+			new VertexAttribute(ShaderDataType.t_float3, "attrib_Position"))
 		);
 		this.vertexArray.putBuffer(this.vertexBuffer);
 		this.indexBuffer = IndexBufferObject.createReference(this.indices, this.indices.length * sizeof("int"), 1);
 		this.vertexArray.putBuffer(this.indexBuffer);
 		this.vertexArray.unBind();
+		
+		this.shader = Shader.create("Rectangle","/Assets/AssetEngine/shaders/Rectangle.vert", "/Assets/AssetEngine/shaders/Rectangle.frag");
 	
 		this.initialized = true;
 	}
@@ -123,9 +126,11 @@ public class ExampleScene extends Scene
 
 		//===== Begin Render World =====
 		{
+			this.shader.bind();
 			this.vertexArray.bind();
 			RenderEngineHelper.drawIndices(this.vertexArray);
 			this.vertexArray.unBind();
+			this.shader.unBind();
 			return this;
 		}
 	}

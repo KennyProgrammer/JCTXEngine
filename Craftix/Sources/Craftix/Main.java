@@ -1,9 +1,10 @@
 package Craftix;
 
 import Craftix.CrafixApp;
-import CTXEngine.CTXEngine;
+
 import CTXEngine.Core.CoreApp;
 import CTXEngine.Core.CoreException;
+
 
 public class Main
 {
@@ -11,5 +12,4 @@ public class Main
 	{
 		CTXEngine.Main.main0(new CrafixApp(new CoreApp.CoreConfigurations()));
 	}
-	
 }

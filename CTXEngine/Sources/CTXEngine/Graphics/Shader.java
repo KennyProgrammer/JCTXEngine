@@ -166,55 +166,55 @@ public abstract class Shader
 		return null;
 	}
 	
-	/*Start to use program.*/
+	/**Start to use program.*/
 	public abstract void bind();
-	/*Stop to use program.*/
+	/**Stop to use program.*/
 	public abstract void unBind();
-	/*Load matrix 4x4 into to shader uniform.*/
+	/**Load matrix 4x4 into to shader uniform.*/
 	public abstract void setUniformMat4(final String name, final Matrix4f matrix4x4);
-	/*Load matrix 3x3 into to shader uniform.*/
+	/**Load matrix 3x3 into to shader uniform.*/
 	public abstract void setUniformMat3(final String name, final Matrix3f matrix3x3);
-	/*Load vector 4 into to shader uniform.*/
+	/**Load vector 4 into to shader uniform.*/
 	public abstract void setUniformVec4(final String name, final Vector4f vector4);
-	/*Load vector 3 into to shader uniform.*/
+	/**Load vector 3 into to shader uniform.*/
 	public abstract void setUniformVec3(final String name, final Vector3f vector3);
-	/*Load vector 2 into to shader uniform.*/
+	/**Load vector 2 into to shader uniform.*/
 	public abstract void setUniformVec2(final String name, final Vector2f vector2);
-	/*Load vector 1 into to shader uniform.*/
+	/**Load vector 1 into to shader uniform.*/
 	public abstract void setUniformVec1(final String name, final float vector);
-	/*Load float into to shader uniform.*/
+	/**Load float into to shader uniform.*/
 	public abstract void setUniformFloat(final String name, float value);
-	/*Load float 2 into to shader uniform.*/
+	/**Load float 2 into to shader uniform.*/
 	public abstract void setUniformFloat2(final String name, float x, float y);
-	/*Load float 2 from vec2 into shader uniform.*/
+	/**Load float 2 from vec2 into shader uniform.*/
 	public abstract void setUniformFloat2(final String name, final Vector2f values);
-	/*Load float 3  into to shader uniform.*/
+	/**Load float 3  into to shader uniform.*/
 	public abstract void setUniformFloat3(final String name, float x, float y, float z);
-	/*Load float 3 from vec2 into shader uniform.*/
+	/**Load float 3 from vec2 into shader uniform.*/
 	public abstract void setUniformFloat3(final String name, final Vector3f values);
-	/* float 4  into to shader uniform.*/
+	/** float 4  into to shader uniform.*/
 	public abstract void setUniformFloat4(final String name, final float x, final float y, final float z, final float w);
-	/*Load float 2 from vec4 into shader uniform.*/
+	/**Load float 2 from vec4 into shader uniform.*/
 	public abstract void setUniformFloat4(final String name, final Vector4f values);
-	/*Load int from vec4 into shader uniform.*/
+	/**Load int from vec4 into shader uniform.*/
 	public abstract void setUniformInt(final String name, int value);
-	/*Load int from vec4 into shader uniform.*/
+	/**Load int from vec4 into shader uniform.*/
 	public abstract void setUniformIntv(final String name, int size, int value);
-	/*Load int 2 from vec4 into shader uniform.*/
+	/**Load int 2 from vec4 into shader uniform.*/
 	public abstract void setUniformInt2(final String name, final Vector2i values);
-	/*Load int 2 into shader uniform.*/
+	/**Load int 2 into shader uniform.*/
 	public abstract void setUniformInt2(final String name, int x, int y);
-	/*Load int 3 from vec4 into shader uniform.*/
+	/**Load int 3 from vec4 into shader uniform.*/
 	public abstract void setUniformInt3(final String name, final Vector3i values);
-	/*Load int 3 into shader uniform.*/
+	/**Load int 3 into shader uniform.*/
 	public abstract void setUniformInt3(final String name, int x, int y, int z);
-	/*Load int 4 from vec4 into shader uniform.*/
+	/**Load int 4 from vec4 into shader uniform.*/
 	public abstract void setUniformInt4(final String name, final Vector4i values);
-	/*Load int 4 into shader uniform.*/
+	/**Load int 4 into shader uniform.*/
 	public abstract void setUniformInt4(final String name, int x, int y, int z, int w);
-	/*Load boolean into to shader uniform.*/
+	/**Load boolean into to shader uniform.*/
 	public abstract void setUniformBoolean(final String name, final boolean value);
-	/*Return name of this shader.*/
+	/**Return name of this shader.*/
 	public abstract String getName();
 
 }
