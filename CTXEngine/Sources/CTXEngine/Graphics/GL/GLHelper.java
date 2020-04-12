@@ -9,7 +9,6 @@ import java.nio.ByteBuffer;
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 import org.lwjgl.PointerBuffer;
-import org.lwjgl.system.NativeType;
 
 import CTXEngine.Core.CAndCppOperations.CType;
 import CTXEngine.Graphics.BufferHelper;
@@ -361,7 +360,7 @@ public final class GLHelper
 	@CType("void")
 	public static void hglDeleteBuffers(@CType("GLSizei") int n, @CType("GLuint") int... arrays)
 	{
-        nglDeleteBuffers(n, pointer(mallocInt(n, arrays)));   
+       		nglDeleteBuffers(n, pointer(mallocInt(n, arrays)));   
 	}
 	
 	/**
@@ -1143,7 +1142,7 @@ public final class GLHelper
 	 * zero width or height, but such a specification has no effect.
 	 */
 	public static void hglTextureSubImage2D(int texture, int level, int xoffset, int yoffset, int width,
-		int height, int format, int type, @NativeType("void const *") long pixels)
+		int height, int format, int type, @CType("void const *") long pixels)
 	{
 		glTextureSubImage2D(texture, level, xoffset, yoffset, width, height,
 			format, type, pixels);
@@ -1154,7 +1153,7 @@ public final class GLHelper
 	 * int height, int format, int type, long pixels)}
 	 */
 	public static void hglTextureSubImage2D(int texture, int level, int xoffset, int yoffset, int width,
-		int height, int format, int type, @NativeType("void const *") IntBuffer pixels)
+		int height, int format, int type, @CType("void const *") IntBuffer pixels)
 	{
 		glTextureSubImage2D(texture, level, xoffset, yoffset, width, height,
 			format, type, pixels);
@@ -1166,7 +1165,7 @@ public final class GLHelper
 	 * int height, int format, int type, long pixels)}
 	 */
 	public static void hglTextureSubImage2D(int texture, int level, int xoffset, int yoffset, int width,
-			int height, int format, int type, @NativeType("void const *") ByteBuffer pixels)
+			int height, int format, int type, @CType("void const *") ByteBuffer pixels)
 	{
 		glTextureSubImage2D(texture, level, xoffset, yoffset, width, height, format, type, pixels);
 	}
