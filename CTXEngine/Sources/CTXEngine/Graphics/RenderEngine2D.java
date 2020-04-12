@@ -1,7 +1,7 @@
 package CTXEngine.Graphics;
 
 import static CTXEngine.Core.CoreBase.*;
-import static CTXEngine.Core.PrimitiveSizes.*;
+import static CTXEngine.Core.CAndCppOperations.*;
 
 import java.nio.ByteBuffer;
 

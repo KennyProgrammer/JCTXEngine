@@ -1,12 +1,12 @@
 package Craftix.Scenes;
 
 import static CTXEngine.Core.InputSystem.InputCodes.*;
-import static CTXEngine.Core.SimplePrint.*;
+import static CTXEngine.Core.CAndCppOperations.*;
 
-import static CTXEngine.Core.PrimitiveSizes.*;
-
+import org.joml.Vector4f;
 import org.lwjgl.system.NonnullDefault;
-import CTXEngine.Core.Delta;
+
+import CTXEngine.Component.GameObject;
 import CTXEngine.Core.Scene;
 import CTXEngine.Core.EventSystem.Event;
 import CTXEngine.Core.InputSystem.Input;
@@ -19,6 +19,7 @@ import CTXEngine.Graphics.BufferObject.VertexBufferObject;
 import CTXEngine.Graphics.BufferObject.VertexAttribute;
 import CTXEngine.Graphics.RenderEngineHelper;
 import CTXEngine.Graphics.Shader;
+import CTXEngine.Graphics.Texture2D;
 
 public class ExampleScene extends Scene
 {
@@ -28,26 +29,38 @@ public class ExampleScene extends Scene
 	public VertexBufferObject vertexBuffer;
 	/**Index Buffer Object.*/
 	public IndexBufferObject indexBuffer;
-	/**Shader.*/
+	/**Test Shader.*/
 	public Shader shader;
+	/**Test Texture.*/
+	public Texture2D whiteTexture;
+	/**Colour of rectangle.*/
+	public Vector4f colour;
+	
+	public GameObject rectangle;
 	
 	float[] vertices = new float[]
 			{
-					0.5f, 0.5f, 0.0f,
-					-0.5f, 0.5f, 0.0f,
-					-0.5f, -0.5f, 0.0f,
-					0.5f, -0.5f, 0.0f
+			     //  position,                 colour
+				 0.5f,  0.5f, 0.0f,  1.0f, 1.0f, 1.0f, 1.0f,
+				-0.5f,  0.5f, 0.0f,  1.0f, 1.0f, 0.0f, 1.0f,
+				-0.5f, -0.5f, 0.0f,  1.0f, 0.0f, 1.0f, 1.0f,
+				 0.5f, -0.5f, 0.0f,  0.0f, 1.0f, 1.0f, 1.0f
 			};
 	
 	int[] indices = new int[]
 			{
 				0, 1, 2, 0, 2, 3	
-			}; 
+			};
+
 	
 	/**
 	 * Default constructor.
 	 */
-	public ExampleScene() { super(); }
+	public ExampleScene() 
+	{ 
+		super();
+		this.colour = new Vector4f(1.0f, 0.0f, 1.0f, 1.0f);
+	}
 	
 	/**
 	 * Load this scene in to memory witch initialization other game objectsand 
@@ -63,14 +76,25 @@ public class ExampleScene extends Scene
 		this.vertexBuffer = VertexBufferObject.createReferenceStatic(this.vertices, this.vertices.length * sizeof("float"));
 		this.vertexBuffer.setLayout(new BufferLayout
 		(
-			new VertexAttribute(ShaderDataType.t_float3, "attrib_Position"))
-		);
+			new VertexAttribute(ShaderDataType.t_float3, "attrib_Position"),
+			new VertexAttribute(ShaderDataType.t_float4, "attrib_Colour"  )
+		   // new VertexAttribute(ShaderDataType.t_float2, "attrib_UvCoord" ),
+		    //new VertexAttribute(ShaderDataType.t_float,  "attrib_UvIndex" )
+		));
 		this.vertexArray.putBuffer(this.vertexBuffer);
 		this.indexBuffer = IndexBufferObject.createReference(this.indices, this.indices.length * sizeof("int"), 1);
 		this.vertexArray.putBuffer(this.indexBuffer);
 		this.vertexArray.unBind();
 		
+		//this.whiteTexture = Texture2D.create(1, 1);
+		//int whiteTextureData = 0xffffffff; //
+		//this.whiteTexture.setTextureData(whiteTextureData, sizeof("int"));
+		
 		this.shader = Shader.create("Rectangle","/Assets/AssetEngine/shaders/Rectangle.vert", "/Assets/AssetEngine/shaders/Rectangle.frag");
+		//this.texture = Texture2D.create("Resources/Assets/AssetEngine/textures/icon_hunger.png");
+		
+		this.rectangle = new GameObject();
+		this.rectangle.create(this.vertexArray, this.vertexBuffer, this.indexBuffer, this.shader, null);
 	
 		this.initialized = true;
 	}
@@ -100,14 +124,35 @@ public class ExampleScene extends Scene
 	 * This event calls every frame (while loop), i.e updates scene.
 	 */
 	@Override
-	public Scene onUpdate(Delta sceneTimeIn) 
+	public Scene onUpdate(float delta) 
 	{
-		if(Input.isButtonPressed(0))       CTX_ENGINE_INFO("Mouse button 0 is pressed!");
+		if(Input.isKeyPressed(CTX_KEY_R))
+		{
+			if(this.colour.x <= 1f)
+				this.colour.x += 0.1f * delta;
+			else this.colour.x = 0f;
+		}
 		
-		if(Input.isKeyPressed(CTX_KEY_A))  CTX_ENGINE_INFO("Key A is pressed!");
-
-		if(Input.isKeyPressed(CTX_KEY_D))  CTX_ENGINE_INFO("Key D is pressed!");
-	
+		if(Input.isKeyPressed(CTX_KEY_G))
+		{
+			if(this.colour.y <= 1f)
+				this.colour.y += 0.1f * delta;
+			else this.colour.y = 0f;
+		}
+		
+		if(Input.isKeyPressed(CTX_KEY_B))
+		{
+			if(this.colour.z <= 1f)
+				this.colour.z += 0.1f * delta;
+			else this.colour.z = 0f;
+		}
+		
+		if(Input.isKeyPressed(CTX_KEY_A))
+		{
+			if(this.colour.w <= 1f)
+				this.colour.w += 0.1f * delta;
+			else this.colour.w = 0f;
+		}
 		
 		return this;
 	}
@@ -126,11 +171,7 @@ public class ExampleScene extends Scene
 
 		//===== Begin Render World =====
 		{
-			this.shader.bind();
-			this.vertexArray.bind();
-			RenderEngineHelper.drawIndices(this.vertexArray);
-			this.vertexArray.unBind();
-			this.shader.unBind();
+			this.rectangle.draw();
 			return this;
 		}
 	}
@@ -156,17 +197,4 @@ public class ExampleScene extends Scene
 	@Override
 	@Deprecated
 	public void pollStack(Event eventIn) {}
-
-	/**
-	 * Simple test draw quad function.
-	 * 
-	 * @param vao - its packed data, position, and etc.
-	 * @param indices - indexes to connect vertices in right order.
-	 */
-	public void drawQuad(int vao, int... indices)
-	{
-		//glBindVertexArray(this.vaoList);
-		//glDrawElements(GL11.GL_TRIANGLES, indices.length, GL11.GL_UNSIGNED_INT, 0);
-		//glBindVertexArray(this.vaoList);
-	}
 }

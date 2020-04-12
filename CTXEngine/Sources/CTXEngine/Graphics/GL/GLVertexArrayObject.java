@@ -20,7 +20,7 @@ import CTXEngine.Graphics.VertexArrayObject;
 public class GLVertexArrayObject extends VertexArrayObject
 {
 	/**It's id / address to this vertex array object.*/
-	private int id;
+	private int[] id;
 	/**This is list with vertex buffers to memory management.*/
 	private ArrayList<VertexBufferObject> vbos = new ArrayList<VertexBufferObject>();
 	/**This is list with index buffers to memory management.*/
@@ -71,7 +71,7 @@ public class GLVertexArrayObject extends VertexArrayObject
 	{
 		if (!this.created)
 		{
-			this.id = GLHelper.hglCreateVertexArrays();
+			this.id = GLHelper.hglCreateVertexArrays(GLHelper.hDefaultVertexArrayGenCount, this.id);
 			this.bind();
 			this.created = true;
 		}
@@ -91,7 +91,7 @@ public class GLVertexArrayObject extends VertexArrayObject
 		if (this.created)
 		{
 			this.unBind();
-			GLHelper.hglDeleteVertexArrays(this.id);
+			GLHelper.hglDeleteVertexArrays(this.id[0]);
 			this.created = false;
 		}
 		else
@@ -109,7 +109,7 @@ public class GLVertexArrayObject extends VertexArrayObject
 	{
 		if(!this.selected)
 		{
-			GLHelper.hglBindVertexArray(this.id);
+			GLHelper.hglBindVertexArray(this.id[0]);
 			this.selected = true;
 		}
 	}
@@ -122,7 +122,7 @@ public class GLVertexArrayObject extends VertexArrayObject
 	{
 		if(this.selected)
 		{
-			GLHelper.hglBindVertexArray(this.id);
+			GLHelper.hglBindVertexArray(this.id[0]);
 			this.selected = false;
 		}
 	}

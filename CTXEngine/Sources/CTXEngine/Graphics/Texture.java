@@ -1,6 +1,7 @@
 package CTXEngine.Graphics;
 
 import java.nio.ByteBuffer;
+import java.nio.IntBuffer;
 
 /**
  * is an image applied (mapped) to the surface of a shape or
@@ -21,6 +22,12 @@ public abstract class Texture
 	 * with size.
 	 */
 	public abstract void setTextureData(ByteBuffer texData, int size);
+	
+	/**
+	 * Set texture data into void pointer block of memory (in Java with IntBuffer) 
+	 * with size.
+	 */
+	public abstract void setTextureData(IntBuffer texData, int size);
 	
 	/*
 	 * Bind texture id and prepare to use.

@@ -1,6 +1,6 @@
 package CTXEngine.Graphics.GL;
 
-import static CTXEngine.Core.PrimitiveSizes.*;
+import static CTXEngine.Core.CAndCppOperations.*;
 import static org.lwjgl.opengl.GL30.*;
 
 import CTXEngine.Graphics.RenderEngineAPI;

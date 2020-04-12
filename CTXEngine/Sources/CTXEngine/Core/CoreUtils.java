@@ -3,11 +3,14 @@ package CTXEngine.Core;
 import static CTXEngine.Core.SimplePrint.CTX_ENGINE_ERROR;
 
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.ByteBuffer;
 import java.nio.channels.Channels;
+import java.nio.channels.FileChannel;
 import java.nio.channels.ReadableByteChannel;
 import java.nio.channels.SeekableByteChannel;
 import java.nio.file.Files;
@@ -196,5 +199,24 @@ public class CoreUtils
 	    }
 	    return -1;
 	}
-
+	
+	public static ByteBuffer resourceToByteBuffer(final String resource) throws IOException
+	{
+		File file = new File(resource);
+		
+		FileInputStream fileInputStream = new FileInputStream(file);
+		FileChannel fileChannel = fileInputStream.getChannel();
+		
+		ByteBuffer buffer = BufferUtils.createByteBuffer((int) fileChannel.size() + 1);
+		
+		while (fileChannel.read(buffer) != -1) {
+			;
+		}
+		
+		fileInputStream.close();
+		fileChannel.close();
+		buffer.flip();
+		
+		return buffer;
+	}
 }

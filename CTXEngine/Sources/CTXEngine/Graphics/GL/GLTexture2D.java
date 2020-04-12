@@ -1,15 +1,16 @@
 package CTXEngine.Graphics.GL;
 
+import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.IntBuffer;
 
-import org.lwjgl.system.MemoryStack;
+import org.lwjgl.BufferUtils;
 import CTXEngine.Graphics.Texture2D;
 
 import static org.lwjgl.opengl.GL46.*;
 import static org.lwjgl.stb.STBImage.*;
 import static CTXEngine.Core.CoreBase.*;
-import static CTXEngine.Core.SimplePrint.*;
+import static CTXEngine.Core.CoreUtils.*;
 
 /**
  * Images in this texture all are 2-dimensional. They have width and
@@ -48,7 +49,9 @@ public final class GLTexture2D extends Texture2D
 		this.type = GL_TEXTURE_2D;
 		this.resource = "";
 		stbi_set_flip_vertically_on_load(true);
-		if(GLGraphicsContext.OPEN_GL_VERSION.contains("4.5"))
+		
+		String glv = GLGraphicsContext.OPEN_GL_VERSION;
+		if(glv.contains("4.5") || glv.contains("4.6") || glv.contains("4.7"))
 		{
 			this.load1_wh();
 		}
@@ -70,7 +73,9 @@ public final class GLTexture2D extends Texture2D
 		this.internalFormat = 0;
 		this.resource = resource;
 		stbi_set_flip_vertically_on_load(true);
-		if (GLGraphicsContext.OPEN_GL_VERSION.contains("4.5"))
+		
+		String glv = GLGraphicsContext.OPEN_GL_VERSION;
+		if(glv.contains("4.5") || glv.contains("4.6") || glv.contains("4.7"))
 		{
 			this.load1();
 		}
@@ -85,19 +90,19 @@ public final class GLTexture2D extends Texture2D
 	 */
 	public void load0()
 	{
-		try(MemoryStack stack = MemoryStack.stackPush())
+		try 
 		{
-			IntBuffer chan = stack.mallocInt(1);
-			IntBuffer w = stack.mallocInt(1);
-			IntBuffer h = stack.mallocInt(1);
-			this.textureData = stbi_load(this.resource, w, h, chan, 4);
-			CTX_ENGINE_ERROR(stbi_failure_reason() + "\n");
-			CTX_ENGINE_ASSERT(textureData == null ? false : true, "Can't load image to texture!");
-		
+			IntBuffer w = BufferUtils.createIntBuffer(1);
+			IntBuffer h = BufferUtils.createIntBuffer(1);
+			IntBuffer chan = BufferUtils.createIntBuffer(1);			
+			this.textureData =  stbi_load_from_memory(resourceToByteBuffer(this.resource), w, h, chan, 0);
+			CTX_ENGINE_ASSERT(textureData == null, "Can't load image to texture!\n" + stbi_failure_reason());
+
 			this.width = w.get();
 			this.height = h.get();
-			this.channels = chan.get(0);
-		}
+			this.channels = chan.get();
+		} 
+		catch (IOException e) { e.printStackTrace(); }
 		
 		if (this.channels == 4)
 		{
@@ -132,20 +137,20 @@ public final class GLTexture2D extends Texture2D
 	 */
 	public void load1()
 	{
-		try(MemoryStack stack = MemoryStack.stackPush())
+		try 
 		{
-			IntBuffer chan = stack.mallocInt(1);
-			IntBuffer w = stack.mallocInt(1);
-			IntBuffer h = stack.mallocInt(1);
-			this.textureData = stbi_load(this.resource, w, h, chan, 0);
-			CTX_ENGINE_ERROR(stbi_failure_reason() + "\n");
-			CTX_ENGINE_ASSERT(textureData == null, "Can't load image to texture!");
-		
+			IntBuffer w = BufferUtils.createIntBuffer(1);
+			IntBuffer h = BufferUtils.createIntBuffer(1);
+			IntBuffer chan = BufferUtils.createIntBuffer(1);			
+			this.textureData =  stbi_load_from_memory(resourceToByteBuffer(this.resource), w, h, chan, 0);
+			CTX_ENGINE_ASSERT(textureData == null, "Can't load image to texture!\n" + stbi_failure_reason());
+
 			this.width = w.get();
 			this.height = h.get();
 			this.channels = chan.get();
-		}
-
+		} 
+		catch (IOException e) { e.printStackTrace(); }
+		
 		int textureMinFilter = 0;
 		int textureMagFilter = 0;
 	
@@ -228,6 +233,7 @@ public final class GLTexture2D extends Texture2D
 		GLHelper.hglTextureParameteri(this.id, GL_TEXTURE_WRAP_S, GL_REPEAT);
 		GLHelper.hglTextureParameteri(this.id, GL_TEXTURE_WRAP_T, GL_REPEAT);
 	}
+
 	
 	/**
 	 * Delete texture data from memory after destroying.
@@ -247,6 +253,22 @@ public final class GLTexture2D extends Texture2D
 	 */
 	@Override
 	public void setTextureData(ByteBuffer texData, int size) 
+	{
+		int bytePerChannel = this.format == GL_RGBA ? 4 : 3;
+		CTX_ENGINE_ASSERT(size == this.width * this.height * bytePerChannel,
+			"Data must be entire texture!");
+		GLHelper.hglTextureSubImage2D(this.id, 0, 0, 0, this.width, this.height,
+				this.format, GL_UNSIGNED_BYTE, texData);
+	}
+	
+	/**
+	 * Set texture data into void pointer block of memory (in Java with ByteBuffer) 
+	 * with size.
+	 * 
+	 * @param texData - is C pointer block of memory in Java's ByteBuffer.
+	 */
+	@Override
+	public void setTextureData(IntBuffer texData, int size) 
 	{
 		int bytePerChannel = this.format == GL_RGBA ? 4 : 3;
 		CTX_ENGINE_ASSERT(size == this.width * this.height * bytePerChannel,

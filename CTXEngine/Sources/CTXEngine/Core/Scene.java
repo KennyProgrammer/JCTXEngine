@@ -20,12 +20,12 @@ public abstract class Scene
 	public int id = 0;
 	/**Name of this scene.*/
 	public String name = "scene";
-	/*Check if this scene is active or enable.*/
+	/**Check if this scene is active or enable.*/
 	private boolean active = true;
-	/*If programmer needs custom update interface system set this to true. If this true
+	/**If programmer needs custom update interface system set this to true. If this true
 	than programmer takes responsibility for the operation of the code.*/
 	private boolean customUpdateInterface = false;
-	/*Show or not 'note / warn message'.*/
+	/**Show or not 'note / warn message'.*/
 	private boolean customUpdateInterfaceNote = !customUpdateInterface ? false : true;
 	
 	public Scene() 
@@ -73,13 +73,13 @@ public abstract class Scene
 	 *	words this event contains while loop and update this scene every frame when
 	 *	window is active.
 	 */
-	public final Scene updateScene(Delta sceneTimeIn)
+	public final Scene updateScene(Delta delta)
 	{
 		if (!this.customUpdateInterface)
 		{
 			if (this.active)
 			{
-				this.onUpdate(sceneTimeIn);
+				this.onUpdate(delta.getDeltaTime());
 				this.onRender();
 				this.onHandleInput();
 			}
@@ -108,7 +108,7 @@ public abstract class Scene
 	/**
 	 * This event calls every frame (while loop), i.e updates scene.
 	 */
-	public abstract Scene onUpdate(Delta sceneTimeIn);
+	public abstract Scene onUpdate(float delta);
 	
 	/**
 	 * This event calls every frame where need render some object. 

@@ -1,24 +1,17 @@
 package CTXEngine.Graphics.GL;
 
-import static org.lwjgl.opengl.GL11.*;
-import static org.lwjgl.opengl.GL13.*;
-import static org.lwjgl.opengl.GL20.*;
-import static org.lwjgl.opengl.GL30.*;
-import static org.lwjgl.opengl.GL32.*;
-import static org.lwjgl.opengl.GL33.*;
-import static org.lwjgl.opengl.GL40.*;
-import static org.lwjgl.opengl.GL44.*;
-import static org.lwjgl.opengl.GL45.*;
-import java.nio.ByteBuffer;
-import java.nio.FloatBuffer;
-import java.nio.IntBuffer;
-
-import org.lwjgl.PointerBuffer;
-import org.lwjgl.system.NativeType;
-
+import static org.lwjgl.opengl.GL46C.*; // latest Open GL build
+import static CTXEngine.Core.CAndCppOperations.cstdlib.*;
 import static CTXEngine.Core.SimplePrint.*;
 import static CTXEngine.Core.CoreBase.*;
 
+import java.nio.ByteBuffer;
+import java.nio.FloatBuffer;
+import java.nio.IntBuffer;
+import org.lwjgl.PointerBuffer;
+import org.lwjgl.system.NativeType;
+
+import CTXEngine.Core.CAndCppOperations.CType;
 import CTXEngine.Graphics.BufferHelper;
 import CTXEngine.Graphics.BufferObject.ShaderDataType;
 
@@ -204,12 +197,15 @@ public final class GLHelper
 		hglDisable(GL_DEPTH_TEST);
 	}
 
+	//-----------------------------------------------
+	
 	/**
 	 * Sets the biplane area of the window to values previously selected
 	 * by hglClearColor, hglClearDepth, and hglClearStencil. Multiple color
 	 * buffers can be cleared simultaneously by selecting more than
 	 * one buffer at a time using hglDrawBuffer.
 	 */
+	@CType("void")
 	public static void hglClear(int mask)
 	{
 		if (mask == 0)
@@ -224,7 +220,8 @@ public final class GLHelper
 	 * the color buffers. Values specified by hglClearColor are clamped to
 	 * the range [0,1].
 	 */
-	public static void hglClearColor(float r, float g, float b, float a)
+	@CType("void")
+	public static void hglClearColor(@CType("GLfloat") float r, @CType("GLfloat") float g, @CType("GLfloat") float b, @CType("GLfloat") float a)
 	{
 		glClearColor(r, g, b, a);
 	}
@@ -234,6 +231,7 @@ public final class GLHelper
 	 * the color buffers. Values specified by hglClearColor are clamped to
 	 * the range [0,1].
 	 */
+	@CType("void")
 	public static void hglClearColor()
 	{
 		glClearColor(hDefaultWinColR, hDefaultWinColG, hDefaultWinColB, hDefaultWinColA);
@@ -243,7 +241,8 @@ public final class GLHelper
 	 * Specifies the affine transformation of x and y from normalized
 	 * device coordinates to window coordinates.
 	 */
-	public static void hglViewport(int x, int y, int widthIn, int heightIn)
+	@CType("void")
+	public static void hglViewport(@CType("GLuint") int x, @CType("GLuint")int y, @CType("GLuint") int widthIn, @CType("GLuint")int heightIn)
 	{
 		glViewport(x, y, widthIn, heightIn);
 	}
@@ -253,100 +252,233 @@ public final class GLHelper
 	 * device coordinates to window coordinates. Position of this viewport
 	 * be stored in hDefault* varible.
 	 */
-	public static void hglViewport(int widthIn, int heightIn)
+	@CType("void")
+	public static void hglViewport(@CType("GLuint") int widthIn, @CType("GLuint") int heightIn)
 	{
-		GLHelper.hglViewport(0, 0, hDefaultWinPosX, hDefaultWinPosY);
-	}
-
-	/**
-	 * Returns n vertex array object names in vertexArrayId.
-	 */
-	public static int hglGenVertexArrays()
-	{
-		return glGenVertexArrays();
+		glViewport(0, 0, hDefaultWinPosX, hDefaultWinPosY);
 	}
 	
 	/**
-	 * Returns n vertex array object names in vertexArrayId.
+	 *  Returns n previously unused vertex array object names in arrays, each representing a 
+	 *  new vertex array object initialized to the default state.
+	 *  
+	 *  @param n - number of vertex array objects to create.
+	 *  @param arrays - specifies an array in which names of the new vertex array objects are stored.
 	 */
-	public static void hglGenVertexArrays(int... ids)
+	@CType("void")
+	public static int[] hglCreateVertexArrays(@CType("GLsizei") int n, @CType("GLuint") int... arrays)
 	{
-		glGenVertexArrays(ids);
-	}
-
-	/**
-	 * 	Returns n vertex array object names in vertexArrayId.
-	 */
-	public static int hglCreateVertexArrays()
-	{
-		return glCreateVertexArrays();
-	}
-	
-	/**
-	 * 	Returns n vertex array object names in vertexArrayId.
-	 */
-	public static void hglCreateVertexArrays(int... ids)
-	{
-		glCreateVertexArrays(ids);
-	}
-
-	/**
-	 * 	Returns n buffer names in vertexArrayId.
-	 */
-	public static int hglGenBuffers()
-	{
-		return glGenBuffers();
+		IntBuffer ip = callocIntEmpty(n);
+		nglCreateVertexArrays(n, pointer(ip));
+		arrays = new int[n];
+		for(int i = 0; i < n; i++) arrays[i] = ip.get(i);
+			return arrays;
 	}
 	
 	/**
-	 * 	Returns n buffer names in vertexArrayId.
+	 *  Returns n previously unused vertex array object names in arrays, each representing a 
+	 *  new vertex array object initialized to the default state.
+	 *  
+	 *  @param n - number of vertex array objects to create.
+	 *  @param arrays - specifies an array in which names of the new vertex array objects are stored.
 	 */
-	public static void hglGenBuffers(int... ids)
+	@CType("void")
+	public static int[] hglGenVertexArrays(@CType("GLSizei") int n, @CType("GLuint") int[] arrays)
 	{
-		glGenBuffers(ids);
-	}
-
-	/**
-	 * Returns n buffer names in vertexArrayId.
-	 */
-	public static int hglCreateBuffers()
-	{
-		return glCreateBuffers();
+		IntBuffer ip = callocIntEmpty(n);
+		nglGenVertexArrays(n, pointer(ip));
+		arrays = new int[n];
+		for(int i = 0; i < n; i++) arrays[i] = ip.get(i);
+			return arrays;
 	}
 	
 	/**
-	 * Returns n buffer names in vertexArrayId.
+	 * Deletes n vertex array objects whose names are stored in the array addressed 
+	 * by arrays. Once a vertex array object is deleted it has no contents and
+	 * its name is again unused.
+	 * 
+	 * @param n - number of vertex array objects to delete.
+	 * @param arrays - specifies the address of an array containing the n names of the objects to be deleted.
 	 */
-	public static void hglCreateBuffers(int... ids)
+	@CType("void")
+	public static void hglDeleteVertexArrays(@CType("GLSizei") int n, @CType("GLuint") int... arrays)
 	{
-		glCreateBuffers(ids);
+        nglDeleteVertexArrays(n, pointer(mallocInt(n, arrays)));   
+	}
+	
+	/**
+	 * Binds the vertex array object with name array.
+	 */
+	@CType("void")
+	public static void hglBindVertexArray(@CType("GLSizei") int array)
+	{
+		glBindVertexArray(array);
+	}
+	
+	/**
+	 * Returns n previously unused buffer names in buffers, each representing a 
+	 * new buffer object initialized as if it had been bound to an unspecified 
+	 * target.
+	 * 
+	 * @param n - specifies the number of buffer objects to create.
+	 * @param buffers - specifies an array in which names of the new buffer objects are stored.
+	 */
+	@CType("void")
+	public static int[] hglCreateBuffers(@CType("GLSizei") int n, @CType("GLuint") int... buffers)
+	{
+		IntBuffer ip = callocIntEmpty(n);
+		nglCreateBuffers(n, pointer(ip));
+		buffers = new int[n];
+		for(int i = 0; i < n; i++) buffers[i] = ip.get(i);
+			return buffers;
+	}
+	
+	/**
+	 * Returns n previously unused buffer names in buffers, each representing a 
+	 * new buffer object initialized as if it had been bound to an unspecified 
+	 * target.
+	 * 
+	 * @param n - specifies the number of buffer objects to create.
+	 * @param buffers - specifies an array in which names of the new buffer objects are stored.
+	 */
+	@CType("void")
+	public static int[] hglGenBuffers(@CType("GLSizei") int n, @CType("GLuint") int... buffers)
+	{
+		IntBuffer ip = callocIntEmpty(n);
+		nglGenBuffers(n, pointer(ip));
+		buffers = new int[n];
+		for(int i = 0; i < n; i++) buffers[i] = ip.get(i);
+			return buffers;
+	}
+	
+	/**
+	 * Deletes n buffer objects named by the elements of the array buffers. After a 
+	 * buffer object is deleted, it has no contents, and its name is free for reuse.
+	 * 
+	 * @param n - number of buffer to delete.
+	 * @param arrays - specifies the address of an array containing the n names of the objects to be deleted.
+	 */
+	@CType("void")
+	public static void hglDeleteBuffers(@CType("GLSizei") int n, @CType("GLuint") int... arrays)
+	{
+        nglDeleteBuffers(n, pointer(mallocInt(n, arrays)));   
+	}
+	
+	/**
+	 * Binds the buffer object with name buffer.
+	 */
+	@CType("void")
+	public static void hglBindBuffer(@CType("GLenum") int target, @CType("GLuint") int buffer)
+	{
+		glBindBuffer(target, buffer);
+	}
+	
+	/**
+	 * Creates and initializes a buffer object's data store.
+	 * 
+	 * @param target - buffer type.
+	 * @param size - size of data in bytes.
+	 * @param data - data to this buffer. Native is <code>const void*</code>, here is <code>int[]</code>.
+	 * @param usage - type of usage, GL_STATIC_DRAW, GL_DYNAMIC_DRAW and else.
+	 */
+	@CType("void")
+	public static void hglBufferData(@CType("GLenum") int target, @CType("GLsizeiptr") int size, @CType("const void*") int[] data, @CType("GLenum") int usage)
+	{
+		IntBuffer ip = (IntBuffer) mallocInt(size, data);
+		nglBufferData(target, Integer.toUnsignedLong(ip.remaining()) << 2, pointer(ip), usage);
+	}
+	
+	/**
+	 * Creates and initializes a buffer object's data store.
+	 * 
+	 * @param target - buffer type.
+	 * @param size - size of data in bytes.
+	 * @param data - data to this buffer. Native is <code>const void*</code>, here is <code>float[]</code>.
+	 * @param usage - type of usage, GL_STATIC_DRAW, GL_DYNAMIC_DRAW and else.
+	 */
+	@CType("void")
+	public static void hglBufferData(@CType("GLenum") int target, @CType("GLsizeiptr") int size, @CType("const void*") float[] data, @CType("GLenum") int usage)
+	{
+		FloatBuffer fp = (FloatBuffer) mallocFloat(size, data);
+		nglBufferData(target, Integer.toUnsignedLong(fp.remaining()) << 2, pointer(fp), usage);
+	}
+	
+	
+	/**
+	 * Enable generic vertex attribute array.
+	 */
+	@CType("void")
+	public static void hglEnableVertexAttribArray(@CType("GLuint") int index)
+	{
+		glEnableVertexAttribArray(index);
+	}
+	
+	/**
+	 * Disable generic vertex attribute array.
+	 */
+	@CType("void")
+	public static void hglDisableVertexAttribArray(@CType("GLuint") int index)
+	{
+		glDisableVertexAttribArray(index);
+	}
+	
+	/**
+	 * Define an array of generic vertex attribute data.
+	 * 
+	 * @param index - index of generic vertex attribute
+	 * @param size - count elements to one attribute, like three {0.4f, 0.2f, 0.1f}
+	 * @param type - type of attribute.
+	 * @param stride - specifies the byte offset between consecutive generic vertex attributes. 
+	 * @param offset - specifies a offset of the first component of the first generic vertex attribute 
+	 * in the array in the data store of the buffer currently bound to the GL_ARRAY_BUFFER target.
+	 */
+	@CType("void")
+	public static void hglVertexAttribPointer(@CType("GLuint") int index, @CType("GLint") int size, @CType("GLenum") int type, @CType("GLboolean") boolean normalized,
+			@CType("GLuint") int stride, @CType("const void*") int offset)
+	{
+		nglVertexAttribPointer(index, size, type, normalized, stride, offset == 0 ? offset : pointer(offset)); //maybe usage for pointer.
+	}
+	
+	/**
+	 * See {@link hglVertexAttribPointer} upper.
+	 * Define an array of generic vertex attribute data.
+	 * <p>
+	 * This method automaticlly convert input data to open gl data, GL_FLOAT, GL_INT.
+	 */
+	@CType("void")
+	public static void hglVertexAttribPointer(int index, int size, ShaderDataType type, boolean normalized, int stride, long pointer)
+	{
+		nglVertexAttribPointer(index, size, hctxConvertData(type), normalized, stride, pointer);
+	}
+	
+	/**
+	 * Specifies multiple geometric primitives with very few subroutine calls. Instead of
+	 * calling a GL procedure to pass each individual vertex, normal, texture coordinate, edge flag,
+	 * or color, you can prespecify separate arrays of vertices, normals,
+	 * and colors and use them to construct a sequence of primitives
+	 * with a single call to glDrawArrays.
+	 */
+	@CType("void")
+	public static void hglDrawArrays(int mode, int first, int count)
+	{
+		glDrawArrays(mode, first, count);
 	}
 
 	/**
-	 * Binds the vertex array object with name array. VertexArrayId is
-	 * the name of a vertex array object previously returned from
-	 * a call to hglGenVertexArrays, or zero to break the existing
-	 * vertex array object binding.
+	 * Specifies multiple geometric primitives with very few subroutine calls. Instead of
+	 * calling a GL function to pass each individual vertex, normal,
+	 * texture coordinate, edge flag, or color, you can prespecify
+	 * separate arrays of vertices, normals, and so on, and use them to
+	 * construct a sequence of primitives with a single call to glDrawElements.
 	 */
-	//unsafty // unbind id not 0 value
-	public static void hglBindVertexArray(int vertexArrayId)
+	@CType("void")
+	public static void hglDrawElements(int mode, int count, int type, @CType("const void*")long indices)
 	{
-		CTX_GL_ERROR((vertexArrayId != 0 && vertexArrayId > 0) ? true : false, "Can't bind vertex array, because it null or not created!");
-			glBindVertexArray(vertexArrayId);
+		nglDrawElements(mode, count, type, indices);
 	}
+	
+	//-----------------------------------------------
 
-	/**
-	 * Binds a buffer object to the specified buffer binding point. Calling
-	 * hglBindBuffer with target set to one of the accepted symbolic
-	 * constants and buffer set to the name of a buffer object binds
-	 * that buffer object name to the target.
-	 */
-	//unsafty // unbind id not 0 value
-	public static void hglBindBuffer(int type, int bufferId)
-	{
-		CTX_GL_ERROR((bufferId != 0 && bufferId > 0) ? true : false, "Can't bind vertex array, because it null or not created!");
-			glBindBuffer(type, bufferId);
-	}
 
 	/**
 	 * Binds the buffer object buffer to the binding point at index index of the
@@ -371,51 +503,6 @@ public final class GLHelper
 	{
 		CTX_GL_ERROR((bufferId != 0 && bufferId > 0) ? true : false, "Can't bind vertex array, because it null or not created!");
 			glBindBufferRange(type, index, bufferId, offset, size);
-	}
-
-	/**
-	 * Delete n vertex array object names in vertexArrayId.
-	 */
-	public static void hglDeleteVertexArrays(int vertexArrayId)
-	{
-		CTX_GL_DEL_ERROR((vertexArrayId != 0 && vertexArrayId > 0) ? true : false, "Can't delete vertex array, because it zero/null!");
-			glDeleteVertexArrays(vertexArrayId);
-	}
-
-	/**
-	 * Delete n buffer names in vertexArrayId.
-	 */
-	public static void hglDeleteBuffers(int bufferId)
-	{
-		CTX_GL_DEL_ERROR((bufferId != 0 && bufferId > 0) ? true : false, "Can't delete buffer, because it zero/null!");
-			glDeleteBuffers(bufferId);
-	}
-
-	/**
-	 * Creates a new data store for the buffer object currently bound to
-	 * target. Any pre-existing data store is deleted.
-	 */
-	public static void hglBufferData(int bufferType, int usage, int size, int... data)
-	{
-		glBufferData(bufferType, BufferHelper.toIntBuffer(size, data), usage);
-	}
-	
-	/**
-	 * Creates a new data store for the buffer object currently bound to
-	 * target. Any pre-existing data store is deleted.
-	 */
-	public static void hglBufferData(int bufferType, int usage, int size, float... data)
-	{
-		glBufferData(bufferType, BufferHelper.toFloatBuffer(size, data), usage);
-	}
-	
-	/**
-	 * Creates a new data store for the buffer object currently bound to
-	 * target. Any pre-existing data store is deleted.
-	 */
-	public static void hglBufferData(int bufferType, int usage, int size, double... data)
-	{
-		glBufferData(bufferType, BufferHelper.toDoubleBuffer(size, data), usage);
 	}
 
 	
@@ -494,25 +581,7 @@ public final class GLHelper
 	//	glBufferSubData(bufferType, offset, size, data);
 	//}
 
-	/**
-	 * Redefines some or all of the data store for the buffer object currently
-	 * bound to target.
-	 */
-	public static void hglVertexAttribPointer(int id, int size, int type, boolean normalized, int stride, long pointer)
-	{
-		glVertexAttribPointer(id, size, type, normalized, stride, pointer);
-	}
-	
-	/**
-	 * Redefines some or all of the data store for the buffer object currently
-	 * bound to target.
-	 * 
-	 * This method automaticlly convert input data to open gl data, GL_FLOAT, GL_INT.
-	 */
-	public static void hglVertexAttribPointer(int id, int size, ShaderDataType type, boolean normalized, int stride, long pointer)
-	{
-		GLHelper.hglVertexAttribPointer(id, size, hctxConvertData(type), normalized, stride, pointer);
-	}
+
 
 	/**
 	 * Modifies the rate at which generic vertex attributes advance when rendering multiple
@@ -523,45 +592,7 @@ public final class GLHelper
 		glVertexAttribDivisor(id, divisor);
 	}
 
-	/**
-	 * Enables the generic vertex attribute array specified by id.
-	 */
-	public static void hglEnableVertexAttribArray(int id)
-	{
-		glEnableVertexAttribArray(id);
-	}
 
-	/*
-	 * Disable the generic vertex attribute array specified by id.
-	 */
-	public static void hglDisableVertexAttribArray(int id)
-	{
-		glDisableVertexAttribArray(id);
-	}
-
-	/**
-	 * Specifies multiple geometric primitives with very few subroutine calls. Instead of
-	 * calling a GL procedure to pass each individual vertex, normal, texture coordinate, edge flag,
-	 * or color, you can prespecify separate arrays of vertices, normals,
-	 * and colors and use them to construct a sequence of primitives
-	 * with a single call to glDrawArrays.
-	 */
-	public static void hglDrawArrays(int mode, int first, int count)
-	{
-		glDrawArrays(mode, first, count);
-	}
-
-	/**
-	 * Specifies multiple geometric primitives with very few subroutine calls. Instead of
-	 * calling a GL function to pass each individual vertex, normal,
-	 * texture coordinate, edge flag, or color, you can prespecify
-	 * separate arrays of vertices, normals, and so on, and use them to
-	 * construct a sequence of primitives with a single call to glDrawElements.
-	 */
-	public static void hglDrawElements(int mode, int count, int type, long indices)
-	{
-		glDrawElements(mode, count, type, indices);
-	}
 
 	/**
 	 * This creates an empty shader object for the shader stage given by given shaderType. The shader
@@ -1113,6 +1144,17 @@ public final class GLHelper
 	 */
 	public static void hglTextureSubImage2D(int texture, int level, int xoffset, int yoffset, int width,
 		int height, int format, int type, @NativeType("void const *") long pixels)
+	{
+		glTextureSubImage2D(texture, level, xoffset, yoffset, width, height,
+			format, type, pixels);
+	}
+	
+	/**
+	 * IntBuffer version of {@link GLHelper.hglTextureSubImage2D(int texture, int level, int xoffset, int yoffset, int width,
+	 * int height, int format, int type, long pixels)}
+	 */
+	public static void hglTextureSubImage2D(int texture, int level, int xoffset, int yoffset, int width,
+		int height, int format, int type, @NativeType("void const *") IntBuffer pixels)
 	{
 		glTextureSubImage2D(texture, level, xoffset, yoffset, width, height,
 			format, type, pixels);

@@ -1,6 +1,7 @@
 package CTXEngine.Graphics.GL;
 
 import java.nio.ByteBuffer;
+import java.nio.IntBuffer;
 
 import CTXEngine.Graphics.Texture3D;
 
@@ -8,8 +9,14 @@ public final class GLTexture3D extends Texture3D
 {
 
 	@Override
-	public void setTextureData(ByteBuffer texData, int size) {
-		// TODO Auto-generated method stub
+	public void setTextureData(ByteBuffer texData, int size) 
+	{
+		
+	}
+	
+	@Override
+	public void setTextureData(IntBuffer texData, int size) 
+	{
 		
 	}
 

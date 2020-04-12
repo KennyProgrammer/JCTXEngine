@@ -5,7 +5,6 @@ import Craftix.CrafixApp;
 import CTXEngine.Core.CoreApp;
 import CTXEngine.Core.CoreException;
 
-
 public class Main
 {
 	public static void main(String[] args) throws CoreException 

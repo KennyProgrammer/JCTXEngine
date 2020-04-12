@@ -1,7 +1,7 @@
 package CTXEngine.Core;
 
 import static CTXEngine.Core.SimplePrint.*;
-import static CTXEngine.Core.PrimitiveSizes.*;
+import static CTXEngine.Core.CAndCppOperations.*;
 
 import CTXEngine.Core.InputSystem.WinInput;
 

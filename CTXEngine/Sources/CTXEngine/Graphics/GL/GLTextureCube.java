@@ -1,6 +1,7 @@
 package CTXEngine.Graphics.GL;
 
 import java.nio.ByteBuffer;
+import java.nio.IntBuffer;
 
 import CTXEngine.Graphics.TextureCube;
 
@@ -9,6 +10,12 @@ public final class GLTextureCube extends TextureCube
 
 	@Override
 	public void setTextureData(ByteBuffer texData, int size) {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	@Override
+	public void setTextureData(IntBuffer texData, int size) {
 		// TODO Auto-generated method stub
 		
 	}
